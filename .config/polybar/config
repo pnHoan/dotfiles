@@ -1,0 +1,259 @@
+[jlobal/wm]
+margin-top = 0
+margin-bottom = 0
+
+[settings]
+screenchange-reload = true
+compositing-background = over
+compositing-foreground = over
+compositing-overline = over
+compositing-underline = over
+compositing-border = over
+
+
+[colors]
+background = #000000
+;background = #ff0000
+foreground = #ffffff
+foreground-active = #00ff00
+occupied = #ffff00
+occupied-active = #ffffff
+active = #5e81ac
+alert = #d08770
+################################################################################
+################################################################################
+############                  MAINBAR-XMONAD                        ############
+################################################################################
+################################################################################
+
+[bar/mainbar-xmonad]
+monitor = ${env:MONITOR}
+monitor-fallback = HDMI1
+monitor-strict = false
+override-redirect = false
+width = 100%
+height = 25
+radius = 0.0
+fixed-center = true
+bottom = false
+separator = |
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 2
+line-color = #f00
+
+padding-left = 1
+padding-right = 1
+
+module-margin-left = 1
+module-margin-right = 1
+
+enable-ipc = true
+
+;fonts
+;font-0 = "Noto Sans:size=10;0"
+;font-1 = "FontAwesome:size=13;0"
+;font-2 = "Noto Sans:size=10;0"
+;font-3 = "Noto Sans Mono:size=10;0"
+;font-4 = "FontAwesome5Brands:size=13;0"
+;font-5 = "FiraCodeNerdFont:size=11;0"
+
+;font-0 = "FontAwesome:size=13;0"
+;font-1 = "FiraCodeNerdFont:size=11;0"
+
+font-0 = "scientifica:size=15;0"
+
+; MyModule
+modules-left = ewmh  
+modules-center = date
+modules-right = wireless-network pavolume memory2 cpu2 battery 
+
+tray-detached = false
+tray-offset-x = 0
+tray-offset-y = 0
+tray-padding = 2
+tray-maxsize = 20
+tray-scale = 1.0
+tray-position = right
+tray-background = ${colors.background}
+
+
+################################################################################
+################################################################################
+############                       MODULES A-Z                      ############
+################################################################################
+################################################################################
+
+[module/battery]
+;https://github.com/jaagr/polybar/wiki/Module:-battery
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 100
+low-at = 25
+
+format-charging = <label-charging>
+label-charging = C %percentage%%
+format-charging-foreground = ${colors.foreground}
+format-charging-background = ${colors.background}
+
+format-discharging = <label-discharging>
+label-discharging = %percentage%%
+format-discharging-foreground = ${colors.foreground}
+format-discharging-background = ${colors.background}
+
+format-full = <label-full>
+label-full = %percentage%%
+format-full-foreground = ${colors.foreground}
+format-full-background = ${colors.background}
+
+format-low = <label-low>
+label-low = %{B#f00}                                                     %percentage%%                                                      %{B-}
+;format-low-foreground = ${colors.foreground}
+format-low-foreground = #fff
+;format-low-background = ${colors.background}
+format-low-background = #f00 
+
+################################################################################
+
+[module/cpu2]
+;https://github.com/jaagr/polybar/wiki/Module:-cpu
+type = internal/cpu
+; Seconds to sleep between updates
+; Default: 1
+interval = 1
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+;label-font = 3
+
+; Available tags:
+;   <label> (default)
+;   <bar-load>
+;   <ramp-load>
+;   <ramp-coreload>
+format = <label>
+
+format-padding = 0
+
+; Available tokens:
+;   %percentage% (default) - total cpu load
+;   %percentage-cores% - load percentage for each core
+;   %percentage-core[1-9]% - load percentage for specific core
+label =%percentage:3%%
+
+################################################################################
+
+[module/date]
+;https://github.com/jaagr/polybar/wiki/Module:-date
+type = internal/date
+; Seconds to sleep between updates
+interval = 1
+date = %d - %m - %y
+time = %H:%M:%S
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+label =< %date% | %time% >
+
+#################################################################
+
+[module/ewmh]
+type = internal/xworkspaces
+
+pin-workspaces = true
+enable-click = true
+enable-scroll = true
+reverse-scroll = true
+
+format = <label-state>
+label-monitor = %name% 
+
+;label-active =%{T6}<%name%>%{T-}
+label-active =<%name%>
+label-active-foreground = ${colors.foreground-active}
+label-active-background = ${colors.background}
+
+;label-occupied =%{T6}[%name%]%{T-}
+label-occupied =[%name%]
+label-occupied-foreground = ${colors.occupied-active}
+label-occupied-background = ${colors.background}
+label-occupied-padding = 1 
+
+;label-urgent = %{T6}{%name%}%{T-}
+label-urgent = {%name%}
+label-urgent-foreground = ${colors.foreground}
+label-urgent-background = ${colors.alert}
+label-urgent-underline = ${colors.alert}
+label-urgent-padding = 1
+
+;label-empty =%{T6}%name%%{T-}
+label-empty =%name%
+label-empty-foreground = ${colors.foreground}
+label-empty-padding = 1
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+
+#################################################################
+
+[module/memory2]
+;https://github.com/jaagr/polybar/wiki/Module:-memory
+type = internal/memory
+interval = 1
+; Available tokens:
+;   %percentage_used% (default)
+;   %percentage_free%
+;   %gb_used%
+;   %gb_free%
+;   %gb_total%
+;   %mb_used%
+;   %mb_free%
+;   %mb_total%
+;label = %percentage_used%%
+label = %mb_used% 
+
+;format = Mem <label>
+format =<label>
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+################################################################################
+
+[module/pavolume]
+type = custom/script
+tail = true
+label = %output%
+exec = ~/.config/polybar/scripts/Mypavolume.sh --listen
+click-right = exec pavucontrol
+click-left = ~/.config/polybar/scripts/Mypavolume.sh --togmute
+;scroll-up = ~/.config/polybar/scripts/Mypavolume.sh --up
+;scroll-down = ~/.config/polybar/scripts/Mypavolume.sh --down
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+
+
+################################################################################
+
+[module/wireless-network]
+;https://github.com/jaagr/polybar/wiki/Module:-network
+type = internal/network
+;interface = wlp3s0
+interface = wlo1
+interval = 3.0
+label-connected = %essid%
+
+format-connected = <label-connected>
+format-connected-foreground = ${colors.foreground}
+format-connected-background = ${colors.background}
+
+label-disconnected = disconnected
+label-disconnected-foreground = ${colors.alert}
+label-disconnected-background = ${colors.background}
+
+format-disconnected = <label-disconnected>
+format-disconnected-foreground = ${colors.alert}
+format-disconnected-background = ${colors.background}
+
+################################################################################

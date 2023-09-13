@@ -1,0 +1,9 @@
+alias xbl="xbacklight -set "
+alias tmn="tmux new -s "
+alias tma="tmux a -t "
+alias nv="nvim "
+alias gsd="~/.config/polybar/laucherPro.sh"
+alias ibusbamboo="ibus-daemon -drx"
+eval "$(starship init zsh)"
+
+[[ -f ~/AppImage/.AI_alias ]] && . ~/AppImage/.AI_alias
